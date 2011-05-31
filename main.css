@@ -1,0 +1,49 @@
+
+body { margin:0px; padding: 0px; border-collapse: collapse; text-align: center; background: #B7B7B7 url('images/frame_bg.gif') repeat-x top left; font: normal 90% verdana, arial, sans-serif; }
+body, li p, code, cite, em { color: #676767;}
+
+.slide { height: 900px; width: 1200px; margin: auto; text-align: left; margin-top: 20px; position: relative; background-color: white;}
+.paddingContainer { padding: 20px;}
+
+/*.hide { display: none;}*/
+/*.show { display: block;}*/
+
+a { text-decoration: underline; color: #888888}
+
+h1 { margin: 0px; color: #FD5111; margin-bottom: 20px; font-size: 2em;}
+h2 { font-size: 1.5em;}
+h3 { font-size: 1.2em;}
+
+ul { list-style: inside square; color: #FD5111; margin: 10px 0px 10px 0px; padding: 0px;}
+li { margin-bottom: 3px;}
+li p { margin: 0px;}
+
+blockquote { background-color: #E2E2E2; padding: 10px; border-left: 1px solid black;}
+
+code { border: 1px solid #E2E2E2; padding: 5px; display: block; margin: 10px 5px; }
+code span { border-right: 2px solid #E2E2E2; padding-right: 20px; margin-right: 5px;}
+
+a img { border: 0px;}
+
+/* Table of contents */
+#tableOfContents { position: absolute; top: 200px; left: 700px; background-color: #CCCCCC; z-index: 100; color: #000000; text-align: left; padding: 20px; border: 2px solid #000000; font-size: 20px; }
+#tableOfContents li { cursor: pointer;}
+
+
+/***************
+ 	slide types
+**************/
+
+/* Intro */
+.introType { background: transparent url('images/mind-mapping-bdd.png') no-repeat top left;}
+.introType #logo { position: absolute; top: 10px; left: 10px;}
+.introType .credits { position: absolute; top: 450px; left: 0px;  filter:alpha(opacity=80); opacity:0.8; width:100%; }
+.introType .credits { background: #FF161A; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF161A', endColorstr='#FF780D'); background: -webkit-gradient(linear, left top, left bottom, from(#FF161A), to(#FF780D)); background: -moz-linear-gradient(top,  #FF161A,  #FF780D); }
+.introType .credits h1 {  color: #FFFFFF; font-size: 5em;  font-family: 'Lobster', arial, serif; margin: 0px 0px 0px 10px;}
+.introType .credits p { color: white; margin-left: 10px; font-size: 1.5em;}
+.introType .credits a {  color: white;}
+.introType .photograph { position: absolute; bottom: 0px; left: 0px; font-size: 0.8em; color: #000000; background-color: #FFFFFF; padding: 5px;}
+
+.endType .brandingContainer { float: left; width: 20%; margin-right: 50px; }
+.endType .textContainer { float: left; width: 70%; }
+.endType img { display: block;}

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="no">
+	<head>
+		<title>BDD JavaScript</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="shortcut icon" href="images/miles.ico" />
+		<link type="text/css" rel="stylesheet" href="main.css" />
+		<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="slides.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+		
+		<div id="tableOfContents">
+			<h2>Innholdsfortegnelse</h2>
+		<ul>
+			<li>Behavior Driven Design (BDD) in JavaScript</li>
+			<li>Mer av applikasjonslogikken skjer i JavaScript</li>
+			<li>BDD eller TDD på klienten (1/2)</li>
+			<li>BDD eller TDD på klienten (2/2)</li>
+			<li>Ulike testrammeverk</li>
+			<li>Hvorfor Jasmine</li>
+			<li>Syntaks</li>
+			<li>Custom matchers</li>
+			<li>Test av jQuery</li>
+			<li>JsTestDriver</li>
+			<li>JsTestDriver in action</li>
+			<li>Kilder</li>
+			<li>Takk for meg</li>
+		</ul>
+		</div>
+			
+		<div id="slide1" class="slide introType">
+			<img id="logo" src="images/miles.png" />
+			<div class="credits">
+				<h1>Behavior Driven Design (BDD)<br /> in JavaScript</h1>
+				<p>Av <a href="http://www.miles.no/Ansatte/Oslo/Geir.689.cms">Geir Wavik</a> Oktober 2010</p>
+			</div>
+			
+			<a class="photograph" href="http://www.ryangreenhall.com/2008/10/mind-mapping-behaviour-driven-development/">Foto: http://www.ryangreenhall.com/2008/10/mind-mapping-behaviour-driven-development/</a>
+		</div>
+		
+		<div id="slide2" class="slide">
+			<div class="paddingContainer">
+				<h1>Mer av applikasjonslogikken skjer i JavaScript</h1>
+			
+				<h2>Hvor er vi i dag</h2>
+				<ul>
+					<li><p>Trenden har gått fra presentasjon av informasjon ( &lt; HTML4.01) til applikasjoner (HTML5)</p></li>
+					<li><p>Fra tynne til tykke klienter</p></li>
+					<li><p>REST/API/JSON</p></li>
+					<li><p>Populært å styre tilstanden til applikasjonen i klienten</p></li>
+					<li><p>Stor bruk av Javascript bibliotek</p></li>
+					<li><p>JavaScript har til nå ofte vært forbunnet med mennesker uten programmeringsbakgrunn</p></li>
+				</ul>
+					
+				<blockquote>
+						JavaScript development may no longer be an adequate description; we're moving into the realm of engineering. 
+						We're not using JavaScript to add a bit of bling to our sites - a slideshow here, some Ajax there - we're architecting an application, damn-it. 
+						We can't just write some procedural code that binds a bunch of anonymous functions to some events and call it a day; if we do, 
+						I can tell you from experience that we're going to end up with a steaming pile of unmaintainable crap.
+				</blockquote>
+				
+				<cite><a href="http://blog.rebeccamurphey.com/on-jquery-large-applications">http://blog.rebeccamurphey.com/on-jquery-large-applications</a></cite>
+				
+				<h2>Fremtiden</h2>
+				<p>Siden vi har mer oppførselintensive klienter bør vi kjøre bdd/tdd på klienten</p>
+				<ul>
+					<li><p>Bedre design/struktur</p></li>
+					<li><p>Bedre kodekvalitet</p></li>
+					<li><p>Lettere å forstå koden</p></li>
+					<li><p>Enklere å introdusere ny funksjonalitet</p></li>
+					<li><p>Sørger for at eksisterende funksjonalitet ikke brekker ved introduksjon av ny funksjonalitet</p></li>
+					<li><p>Metodikken involverer kunden og vil bedre kravspesifikasjonene og dermed estimatene</p></li>
+				</ul>
+			</div>
+		</div>
+			
+		<div id="slide3" class="slide">
+			<div class="paddingContainer">
+				<h1>BDD eller TDD på klienten (1/2)</h1>
+				
+				<h2>BDD</h2>
+				<blockquote>
+					BDD is a second-generation, outside-in, pull-based, multiple-stakeholder, multiple-scale, high-automation, agile methodology. 
+					It describes a cycle of interactions with well-defined outputs, resulting in the delivery of working, tested software that matters.
+				</blockquote>
+				<cite>Dan North, 2009</cite>
+				
+				<h3>Outside-in</h3>
+
+				<p>
+					BDD is driven by business value that is, the <strong>benefit to the business</strong> which accrues once the application is in production. 
+					The only way in which this benefit can be realized is <strong>through the user interface(s)</strong> to the application, usually (but not always) a GUI.
+					In the same way, each piece of code, starting with the UI, can be considered a stakeholder of the other modules of code which it uses. 
+					Each element of code provides some aspect of behavior which, in collaboration with the other elements, provides the application behavior.
+				</p>
+				<p>
+					<strong>The first piece of production code that BDD developers implement is the UI</strong>. Developers can then benefit from quick feedback as to whether the UI looks and behaves appropriately. 
+					Through code, and using principles of good design and refactoring, developers discover collaborators of the UI, and of every unit of code thereafter. 
+					This helps them adhere to the principle of <span title="You ain't gonna need it">YAGNI</span>, 
+					since each piece of production code is required either by the business, or by another piece of code already written.
+				</p>
+				
+				<h3>Eksempel på krav fra forretningssiden</h3>
+				<p>
+					Scenario 1: Refunded items should be returned to stock<br />
+					Given a customer buys a black jumper<br />
+					and I have three black jumpers left in stock<br />
+					when he returns the jumper for a refund<br />
+					then I should have four black jumpers in stock
+				</p>
+				
+				<a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">Kilde: http://en.wikipedia.org/wiki/Behavior_Driven_Development</a>
+				
+			</div>
+		</div>
+		
+		<div id="slide4" class="slide">
+			<div class="paddingContainer">
+				<h1>BDD eller TDD på klienten (2/2)</h1>
+					
+				<h2>TDD</h2>
+				<p>
+					Test-driven development (TDD) is a software development process that relies on the repetition of a very short development cycle: 
+					first the developer writes a failing automated test case that defines a desired improvement or new function, 
+					then produces code to pass that test and finally refactors the new code to acceptable standards. Kent Beck, 
+					who is credited with having developed or 'rediscovered' the technique, stated in 2003 that TDD encourages simple designs and inspires confidence
+				</p>
+
+				<p>
+					Test-driven development is <strong>difficult</strong> to use in situations where full functional tests are required to determine success or failure. 
+					Examples of these are <strong>user interfaces</strong>, programs that work with databases, and some that depend on specific network configurations. 
+					TDD encourages developers to put the minimum amount of code into such modules and to maximise the logic that is in testable library code, using fakes and mocks to represent the outside world.
+				</p>
+
+				<cite><a href="http://en.wikipedia.org/wiki/Test_Driven_Development">Kilde: http://en.wikipedia.org/wiki/Test_Driven_Development</a></cite>
+				
+				<p>TDD tester inside out, tester en liten isolert del av koden. Tester at output blir riktig basert på en input.</p>
+				
+				<h2>Så hvilket type rammeverk bør man velge?</h2>
+				<ul>
+					<li><p>BDD spesifiserer oppførsel men TDD spesifiserer output.</p></li>
+					<li><p>Begge er utviklingsmetodikker hvor man skriver testen før man skriver koden og passer godt inn i smidige prosjekter</p></li>
+					<li><p>Stort sett har man oppførselsintensive JavaScript og da kan det vært lurt å velge et BDD-rammeverk</p></li>
+					<li><p>Har man en JavaScript prototype som behandler inndata og spytter ut data kan det være lurt å velge et xUnit-rammeverk</p></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="slide5" class="slide">
+			<div class="paddingContainer">
+				<h1>Ulike testrammeverk</h1>
+				
+				<h2>BDD</h2>
+				<ul>
+					<li><p><a href="http://visionmedia.github.com/jspec">JSpec</a></p></li>
+					<li><p><a href="http://jania.pe.kr/aw/moin.cgi/JSSpec">JSSpec</a></p></li>
+					<li><p><a href="http://github.com/nkallen/screw-unit">Screw.Unit</a> - Forlatt til fordel for Jasmine</p></li>
+					<li><p><a href="http://github.com/aq1018/inspec">Inspec</a></p></li>
+					<li><p><a href="http://jshoulda.scriptia.net">jShoulda</a></p></li>
+					<li><p><a href="http://sugartest.scriptia.net">SugarTest</a></p></li>	
+					<li><p><a href="http://github.com/pivotal/jasmine">Jasmine</a></p></li>
+				</ul>
+				<cite><a href="http://testdrivenwebsites.com/2010/04/28/java-script-bdd-style-frameworks-comparison/">http://testdrivenwebsites.com/2010/04/28/java-script-bdd-style-frameworks-comparison/</a></cite>
+				
+				<h2>xUnit</h2>
+				<ul>
+					<li><p><a href="http://code.google.com/p/js-test-driver">JsTestDriver</a></p></li>
+					<li><p><a href="http://docs.jquery.com/QUnit">QUnit</a></p></li>
+					<li><p><a href="http://code.google.com/p/jqunit">jqUnit</a></p></li>
+					<li><p><a href="http://developer.yahoo.com/yui/yuitest/">YUI Test</a></p></li>
+					<li><p><a href="http://www.jsunit.net">JsUnit</a> -  Forlatt til fordel for ScrewUnit som er forlatt til fordel for Jasmine</p></li>
+					<li><p><a href="http://jsunity.com">jsUnity</a></p></li>
+					<li><p><a href="http://jsunit.berlios.de">JsUnit (berlios)</a></p></li>
+					<li><p><a href="http://jsunittest.com">JsUnitTest</a></p></li>
+					<li><p><a href="http://j3unit.sourceforge.net">J3Unit</a></p></li>
+				</ul>
+				
+				<cite><a href="http://testdrivenwebsites.com/2010/04/19/java-script-xunit-style-frameworks-comparison/">http://testdrivenwebsites.com/2010/04/19/java-script-xunit-style-frameworks-comparison/</a></cite>
+				
+				<h2>Mock rammverk</h2>
+				<ul>
+					<li><p><a href="http://jsmockito.org">JsMockito</a></p></li>
+					<li><p><a href="http://code.google.com/p/jqmock">jqMock</a></p></li>
+					<li><p><a href="http://jsmock.sourceforge.net">JSMock</a></p></li>
+					<li><p><a href="http://code.google.com/p/amok">Amok</a></p></li>
+					<li><p><a href="http://boss.bekk.no/display/BOSS/Jack">Jack</a></p></li>
+					<li><p><a href="http://github.com/nakajima/jj">JJ</a></p></li>
+				</ul>
+				
+				<cite><a href="http://testdrivenwebsites.com/2010/05/06/java-script-mock-frameworks-comparison/">http://testdrivenwebsites.com/2010/05/06/java-script-mock-frameworks-comparison/</a></cite>
+			</div>
+		</div>
+		
+		<div id="slide6" class="slide">
+			<div class="paddingContainer">
+				<h1>Hvorfor Jasmine</h1>
+				
+				<ul>
+					<li><p>Ren javascript</p></li>
+					<li><p>Ingen binding mot DOM (nettleser trenger ikke kjøre)</p></li>
+					<li><p>Setup og teardown</p></li>
+					<li><p>Mulig å lage egne matchere</p></li>
+					<li><p>Mulig å teste bruk av js bibliotek</p></li>
+					<li><p>Eget top notch mockrammeverk integrert</p></li>
+					<li><p>Støtte for spies</p></li>
+					<li><p>Støtte for asynkrone tester</p></li>
+					<li><p>Nøstede describes</p></li>
+					<li><p>Veldig bra HTML runner</p></li>
+					<li><p>God støtte for kontinuerlig bygging enten via <a href="http://github.com/pivotal/jasmine-ruby">jasmine-ruby</a> 
+						eller <a href="(http://code.google.com/p/js-test-driver/wiki/XUnitCompatibility">jsTestDriver</a></p></li>
+					<li><p>Lavt versjons nummer indikerer at det ikke er et gammelt rammeverk men det innholder mye funksjonalitet og er veldig stabilt.</p></li>
+				</ul>
+			</div>
+		</div>
+			
+		<div id="slide7" class="slide">
+			<div class="paddingContainer">
+				<h1>Syntaks</h1>
+				
+				<code>
+					<span>01</span>describe('some suite', function () { <br />
+					<span>02</span>&nbsp;&nbsp;var suiteWideFoo;<br />
+					<span>03</span><br />
+					<span>04</span>&nbsp;&nbsp;beforeEach(function () {<br />
+					<span>05</span>&nbsp;&nbsp;&nbsp;&nbsp;suiteWideFoo = 0;<br />
+					<span>06</span>&nbsp;&nbsp;});<br />
+					<span>07</span><br />
+					<span>08</span>&nbsp;&nbsp;afterEach(function () {<br />
+					<span>09</span>&nbsp;&nbsp;&nbsp;&nbsp;//...<br />
+					<span>10</span>&nbsp;&nbsp;});<br />
+					<span>11</span><br />
+					<span>12</span>&nbsp;&nbsp;describe('some nested suite', function() {<br />
+					<span>13</span>&nbsp;&nbsp;&nbsp;&nbsp;var nestedSuiteBar;<br />
+					<span>14</span><br />
+					<span>15</span>&nbsp;&nbsp;&nbsp;&nbsp;beforeEach(function() {<br />
+					<span>16</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nestedSuiteBar=1;<br />
+					<span>17</span>&nbsp;&nbsp;&nbsp;&nbsp;});<br />
+					<span>18</span><br />
+					<span>19</span>&nbsp;&nbsp;&nbsp;&nbsp;afterEach(function() {<br />
+					<span>20</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//...<br />
+					<span>21</span>&nbsp;&nbsp;&nbsp;&nbsp;});<br />
+					<span>22</span><br />
+					<span>23</span>&nbsp;&nbsp;&nbsp;&nbsp;it('nested expectation', function () {<br />
+					<span>24</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expect(suiteWideFoo).toEqual(0);<br />
+					<span>25</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expect(nestedSuiteBar).toEqual(1);<br />
+					<span>26</span>&nbsp;&nbsp;&nbsp;&nbsp;});<br />
+					<span>27</span>&nbsp;&nbsp;});<br />
+					<span>28</span><br />
+					<span>29</span>&nbsp;&nbsp;it('top-level describe', function () {<br />
+					<span>30</span>&nbsp;&nbsp;&nbsp;&nbsp;expect(suiteWideFoo).toEqual(0);<br />
+					<span>31</span>&nbsp;&nbsp;&nbsp;&nbsp;expect(nestedSuiteBar).toEqual(undefined);<br />
+					<span>32</span>&nbsp;&nbsp;});<br />
+					<span>33</span>});<br />
+				</code>
+			</div>
+		</div>
+		
+		<div id="slide8" class="slide">
+			<div class="paddingContainer">
+				<h1>Custom matchers</h1>
+				
+				<h2>Lesbarhet</h2>
+				<p>
+					For å verifisere et gitt utrykk trenger man i teorien kun '.toBeTrue()', men dette gjør at testen i mange tilfeller ikke blir så lesbar
+				</p>
+			
+				<code><span>1</span>expect(someVariable != undefined).toBeTrue();</code>
+
+				<p>Eksempelet under viser hvordan en <strong>custom matcher</strong> øker lesbarheten på testen</p>
+				
+				<code><span>1</span>expect(someVariable).toBeDefined();</code>
+				
+				<h2>Ulike implementeringer</h2>
+				
+				<p>Den enkleste måten å lage egne matchere på er å bruke .addMatchers() metoden i beforeEach()</p>
+				<code>
+					<span>1</span>beforeEach(function() {<br />
+					<span>2</span>&nbsp;&nbsp;this.addMatchers({<br />
+					<span>3</span>&nbsp;&nbsp;&nbsp;&nbsp;toHaveClass: function(className) {<br />
+					<span>4</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return this.actual.hasClass(className);<br />
+					<span>5</span>&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+					<span>6</span>&nbsp;&nbsp;});<br />
+					<span>7</span>});
+				</code>
+				
+				<p>Et annet alternativ er å flytte implementeringen av matcheren til en egen fil, men man må fremdeles legge til matcheren med '.addMatchers()' i beforeEach.</p>
+				
+				<p>En mer robust løsning er å "hacke" matcheren inni Jasmine rammeverket direkte ved å overstyre matcher objektet sin protype i en egen fil (inkluder filen i runner.html)</p>
+				
+				<code>
+					<span>1</span>jasmine.Matchers.prototype.toHaveClass: function(className) {<br />
+					<span>2</span>&nbsp;&nbsp;return this.actual.hasClass(className);<br />
+					<span>3</span>};
+				</code>
+			
+				<p>
+					Les mer på lenken under for å få meningsfulle feilmeldinger med custom matchers <br />
+					<a href="http://testdrivenwebsites.com/2010/08/04/custom-jquery-matchers-in-jasmine/">http://testdrivenwebsites.com/2010/08/04/custom-jquery-matchers-in-jasmine/</a>
+				</p>		
+				
+			</div>
+		</div>
+		
+		<div id="slide9" class="slide">
+			<div class="paddingContainer">
+				<h1>Test av jQuery</h1>
+			
+				<h2>Jasmine-jQuery plugin</h2>
+				<p>Last ned plugin og inkluder i html runner sammen med jQuery biblioteket. <br /> Pluginen er avhengig av jQuery.
+				<a href="http://github.com/velesin/jasmine-jquery">http://github.com/velesin/jasmine-jquery</a>
+				
+				<h3>Innholder</h3>
+				<ul>
+					<li>
+						<p>et sett med custom matchers tilpasset jQuery biblioteket (f.eks: toBeVisible(), .toBeHidden() etc.)</p>
+						<p>Føger same standard som Jasmine matcherne ved at man kan bruke .not prefix:</p>
+						<code>
+							<span>01</span>expect($('&lt;div&gt;some text&lt;/div&gt;')).not.toHaveText('other text');
+						</code>
+					</li>
+					<li>
+						<p>et Api for å behandle HTML fixtures i spesifikasjonene(testene)</p>
+						<em>i myfixture.html</em>
+						<code>
+							<span>01</span>&lt;div id="my-fixture"&gt;some complex content here&lt;/div&gt;				
+						</code>
+						<em>inni spesifikasjonen</em>
+						<code>
+							<span>01</span>loadFixtures('myfixture.html');<br />
+							<span>02</span>$('#my-fixture').myTestedPlugin();<br />
+							<span>03</span>expect($('#my-fixture')).to...;<br />
+						</code>
+					</li>
+				</ul>
+				
+				<cite><a href="http://testdrivenwebsites.com/2010/07/29/html-fixtures-in-jasmine-using-jasmine-jquery/">http://testdrivenwebsites.com/2010/07/29/html-fixtures-in-jasmine-using-jasmine-jquery/</a></cite>
+				
+				<h2>Testing av andre biliotek</h2>
+				<p>Utvikle egne matchere samt mulighet for å laste inn fixtures, eventuelt bruke jasmin-jquery plugin + lage egne matchere</p>
+				
+			</div>
+		</div>
+		
+		<div id="slide10" class="slide">
+			<div class="paddingContainer">
+				<h1>JsTestDriver</h1>
+				
+				<p>JsTestDriver utviklet av Google består av en enkelt JAR fil. <a href="http://code.google.com/p/js-test-driver/">http://code.google.com/p/js-test-driver/</a> som kan kjøres via commandolinje</p>
+				<blockquote>
+					The goal of the js-test-driver is to be the test runner for JavaScript testing. 
+					It is not our goal to be the assertion framework for the JavaScript testing, instead we hope that the open-source community will integrate a wide variety of assertion framework as plugins to js-test-driver.
+				</blockquote>
+				<cite>http://code.google.com/p/js-test-driver/wiki/XUnitCompatibility</cite>
+				
+				<h2>Adapter</h2>
+				<a href="http://github.com/ibolmo/jasmine-jstd-adapter">http://github.com/ibolmo/jasmine-jstd-adapter</a>
+				
+				<h2>IDE støtte</h2>
+				<ul>
+					<li><p><a href="http://code.google.com/p/js-test-driver/wiki/UsingTheEclipsePlugin">Eclipse plugin</a></p></li>
+					<li><p>IntelliJ - Se etter JSTestDriver i Plugin Manager</p></li>
+				</ul>
+
+				<p><strong>CodeCoverage</strong> plugin <a href="http://code.google.com/p/js-test-driver/wiki/CodeCoverage">http://code.google.com/p/js-test-driver/wiki/CodeCoverage</a></p>
+				
+				<p>
+					<strong>Rask!</strong> 300 tests kjører på 498ms i Firefox 3.5 (pluss overheaden for sending av requests, samling av resultat etc.- vanligvis er det ferdig på et sekund eller to).<br />
+					Dette fordi serveren pusher ut testene til alle nettleserne samtidig
+				</p>
+				<cite><a href="http://cjohansen.no/en/javascript/test_driven_javascript_done_right">http://cjohansen.no/en/javascript/test_driven_javascript_done_right</a></cite>
+				
+				<p>Man kan få test outputten som xml format som enkelt kan inkluderes i et CI-system</p>
+
+			</div>
+		</div>
+		
+		<div id="slide11" class="slide">
+			<div class="paddingContainer">
+				<h1>JsTestDriver in action</h1>
+				
+				<img src="images/jsTestDriver.png"> 
+			
+				<object width="480" height="385">
+					<param name="movie" value="http://www.youtube.com/v/V4wYrR6t5gE?fs=1&amp;hl=en_US"></param>
+					<param name="allowFullScreen" value="true"></param>
+					<param name="allowscriptaccess" value="always"></param>
+					<embed src="http://www.youtube.com/v/V4wYrR6t5gE?fs=1&amp;hl=en_US" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed>
+				</object>
+			</div>
+		</div>
+		
+		<div id="slide12" class="slide">
+			<div class="paddingContainer">
+				<h1>Kilder</h1>
+				
+				<ul>
+					<li><p><a href="http://blog.rebeccamurphey.com/on-jquery-large-applications">http://blog.rebeccamurphey.com/on-jquery-large-applications</a></p></li>
+					<li><p><a href="http://en.wikipedia.org/wiki/Behavior_Driven_Development">Kilde: http://en.wikipedia.org/wiki/Behavior_Driven_Development</a></p></li>
+					<li><p><a href="http://en.wikipedia.org/wiki/Test_Driven_Development">Kilde: http://en.wikipedia.org/wiki/Test_Driven_Development</a></p></li>
+					<li><p><a href="http://testdrivenwebsites.com/2010/04/28/java-script-bdd-style-frameworks-comparison/">http://testdrivenwebsites.com/2010/04/28/java-script-bdd-style-frameworks-comparison/</a></p></li>
+					<li><p><a href="http://testdrivenwebsites.com/2010/04/19/java-script-xunit-style-frameworks-comparison/">http://testdrivenwebsites.com/2010/04/19/java-script-xunit-style-frameworks-comparison/</a></p></li>
+					<li><p><a href="http://testdrivenwebsites.com/2010/05/06/java-script-mock-frameworks-comparison/">http://testdrivenwebsites.com/2010/05/06/java-script-mock-frameworks-comparison/</a></p></li>
+					<li><p><a href="http://testdrivenwebsites.com/2010/08/04/custom-jquery-matchers-in-jasmine/">http://testdrivenwebsites.com/2010/08/04/custom-jquery-matchers-in-jasmine/</a></p></li>
+					<li><p><a href="http://testdrivenwebsites.com/2010/07/29/html-fixtures-in-jasmine-using-jasmine-jquery/">http://testdrivenwebsites.com/2010/07/29/html-fixtures-in-jasmine-using-jasmine-jquery/</a></p></li>
+					<li><p><a href="http://code.google.com/p/js-test-driver/">http://code.google.com/p/js-test-driver/</a></p></li>
+					<li><p><a href="http://cjohansen.no/en/javascript/test_driven_javascript_done_right">http://cjohansen.no/en/javascript/test_driven_javascript_done_right</a></p></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="slide13" class="slide endType">
+			<div class="paddingContainer">
+				<h1>Takk for meg</h1>
+				
+				<div class="brandingContainer">
+					<a href="http://www.miles.no/Ansatte/Oslo/Geir.689.cms"><img src="images/geir.png" alt="Geir" /></a>
+					
+					<img src="images/milesbig.jpg" alt="Miles logo" />
+				</div>
+				
+				<div class="textContainer">
+					<h2>Geir Wavik</h2>
+					<p>Oslo: Utvikler</p>
+					<p>
+						Geir har en master i information technology fra Swinburne University i 2003. 
+						Han har sin spisskompetanse på utvikling av brukergrensesnitt med fokus på webstandarder, brukervennlighet og tilgjengelighet. 
+						Har blant annet vært en sentral ressurs i implementeringen av løsninger som har vunnet både Gulltaggen og Tilgjengelighetsprisen. 
+						Før Geir startet i Miles, arbeidet han som seniorkonsulent i Bekk.
+					</p>
+					<p>
+						Geir en ekte bygutt som har utvandret til Oslos utkantstrøk. Når han ikke pusser opp trives han best med sjø og sol. Som nybakt pappa håper han sønnen snart er gammel nok til å være med på "Enga"-kamp.
+					</p>
+					
+					<a href="http://twitter.com/geirwavik">http://twitter.com/geirwavik</a>
+					
+				    <img src="images/greatplace.png" alt="Great place to work logo">
+				</div>
+							
+			</div>
+		</div>
+	</body>
+</html>
